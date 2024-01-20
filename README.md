@@ -4,24 +4,30 @@ Cohere empowers every developer and enterprise to build amazing products and cap
 
 This package provides a powerful bridge between your Flutter application and Cohere AI. It empowers you to seamlessly integrate Cohere's capabilities into your app, unlocking possibilities for building innovative, intelligent, and engaging experiences that redefine user interaction.
 
+## Package
+
+<details>
+  <summary>Table of content</summary>
+
+<!-- TOC -->
+
+- [Flutter Cohere](#flutter-cohere)
+- [Features](#features)
+- [Getting started](#getting-started)
+- [Installation](#installation)
+- [Import](#import)
+- [Initialize Cohere](#initialize-cohere)
+- [Content-based APIs](#content-based-apis)
+
+<!-- TOC -->
+</details>
+
+
 ## Features
 
-- Set up your API key [scroll](#getting-started)
-- Initialize Gemini [scroll](#initialize-cohere)
-- Content-based APIs [scroll](#content-based-apis)
-  - Stream Generate Content [scroll](#stream-generate-content)
-  - Text-only input [scroll](#text-only-input)
-  - Multi-turn conversations (chat) [scroll](#multi-turn-conversations-chat)
-  - Embed [scroll](#embed)
-  - Embed-jobs [scroll](#embed-jobs)
-  - Rerank [scroll](#rerank)
-  - Classify [scroll](#classify)
-  - Datasets [scroll](#datasets)
-  - Summarize [scroll](#summarize)
-  - Tokenize [scroll](#tokenize)
-  - Detokenize [scroll](#detokenize)
-  - Connectors [scroll](#connectors)
-- Flutter Cohere widgets [scroll](#flutter-gemini-widgets)
+- Text-only input [scroll](#text-only-input)
+- Multi-turn conversations (chat) [scroll](#multi-turn-conversations-chat)
+
 
 ## Getting started
 
