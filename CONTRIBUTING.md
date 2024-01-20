@@ -60,5 +60,4 @@ Go to and click "Compare & pull request" for your feature branch. Then fill in t
 
 ## License
 
-By contributing to flutter_cohere, you agree that your contributions will be licensed under its Apache 2.0 license.
-
+By contributing to `flutter_cohere`, you agree that your contributions will be licensed under its BSD license.
