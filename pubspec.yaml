@@ -1,6 +1,6 @@
 name: flutter_cohere
 description: "Flutter Cohere SDK. Cohere empowers every developer and enterprise to build amazing products and capture true business value with language AI."
-version: 0.0.1
+version: 0.0.2
 
 repository: https://github.com/abdibrokhim/flutter_cohere
 issue_tracker: https://github.com/abdibrokhim/flutter_cohere/issues
