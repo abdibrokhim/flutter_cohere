@@ -7,14 +7,15 @@ class CohereClient {
 /// Cohere Client
 ///
 ///    Args:
-///        api_key (String): Your API key.
-///        num_workers (int): Maximal number of threads for parallelized calls.
-///        request_dict (dict): Additional parameters for calls with the requests library. Currently ignored in AsyncClient
-///        check_api_key (bool): Whether to check the api key for validity on initialization.
-///        client_name (String): A string to identify your application for internal analytics purposes.
-///        max_retries (int): maximal number of retries for requests.
+///        apiKey (String): Your API key.
+///        numWorkers (int): Maximal number of threads for parallelized calls.
+///        requestDict (dict): Additional parameters for calls with the requests library. Currently ignored in AsyncClient
+///        checkApiKey (bool): Whether to check the api key for validity on initialization.
+///        clientName (String): A string to identify your application for internal analytics purposes.
+///        maxRetries (int): maximal number of retries for requests.
 ///        timeout (int): request timeout in seconds.
-///        api_url (String): override the default api url from the default Constants.cohereApiUrl
+///        apiURL (String): override the default api url from the default Constants.cohereApiUrl
+///        batchSize (int): maximal number of requests to send in a single batch. Only used in AsyncClient.
 
   final String apiKey;
   final String? apiURL;
@@ -51,13 +52,22 @@ class CohereClient {
 /// Args:
 ///   prompt (String): Represents the prompt or text to be completed. Trailing whitespaces will be trimmed.
 ///   model (String): (Optional) The model ID to use for generating the next reply.
-///   return_likelihoods (String): (Optional) One of GENERATION|ALL|NONE to specify how and if the token (log) likelihoods are returned with the response.
+///   returnLikelihoods (String): (Optional) One of GENERATION|ALL|NONE to specify how and if the token (log) likelihoods are returned with the response.
 ///   preset (String): (Optional) The ID of a custom playground preset.
-///   num_generations (int): (Optional) The number of generations that will be returned, defaults to 1.
-///   max_tokens (int): (Optional) The number of tokens to predict per generation, defaults to 20.
+///   numGenerations (int): (Optional) The number of generations that will be returned, defaults to 1.
+///   maxTokens (int): (Optional) The number of tokens to predict per generation, defaults to 20.
 ///   temperature (double): (Optional) The degree of randomness in generations from 0.0 to 5.0, lower is less random.
 ///   truncate (String): (Optional) One of NONE|START|END, defaults to END. How the API handles text longer than the maximum token length.
 ///   stream (bool): Return streaming tokens.
+///   k (int): (Optional) The number of top tokens to randomly select from.
+///   p (double): (Optional) The nucleus sampling probability.
+///   frequencyPenalty (double): (Optional) The frequency penalty to use for the next reply.
+///   presencePenalty (double): (Optional) The presence penalty to use for the next reply.
+///   endSequences (List<String>): (Optional) A list of sequences where the API will stop generating further tokens.
+///   stopSequences (List<String>): (Optional) A list of sequences where the API will stop generating further tokens.
+///   logitBias (Map<int, double>): (Optional) A dictionary of logit bias values to use for the next reply.
+///   stream (bool): (Optional) Whether to stream back the tokens as they are generated.
+/// 
 /// 
 /// Returns:
 ///   if stream=False: a Generations object
@@ -154,25 +164,25 @@ class CohereClient {
 ///   message (String): The message to send to the chatbot.
 ///
 ///   stream (bool): Return streaming tokens.
-///   conversation_id (String): (Optional) To store a conversation then create a conversation id and use it for every related request.
+///   conversationId (String): (Optional) To store a conversation then create a conversation id and use it for every related request.
 ///
-///   preamble_override (str): (Optional) A string to override the preamble.
-///   chat_history (List<Map<String, String>>): (Optional) A list of entries used to construct the conversation. If provided, these messages will be used to build the prompt and the conversation_id will be ignored so no data will be stored to maintain state.
+///   preambleOverride (str): (Optional) A string to override the preamble.
+///   chatHistory (List<Map<String, String>>): (Optional) A list of entries used to construct the conversation. If provided, these messages will be used to build the prompt and the conversation_id will be ignored so no data will be stored to maintain state.
 ///
 ///   model (String): (Optional) The model to use for generating the response.
 ///   temperature (double): (Optional) The temperature to use for the response. The higher the temperature, the more random the response.
 ///   p (double): (Optional) The nucleus sampling probability.
 ///   k (double): (Optional) The top-k sampling probability.
-///   logit_bias (Map<int, double>): (Optional) A dictionary of logit bias values to use for the next reply.
-///   max_tokens (int): (Optional) The max tokens generated for the next reply.
+///   logitBias (Map<int, double>): (Optional) A dictionary of logit bias values to use for the next reply.
+///   maxTokens (int): (Optional) The max tokens generated for the next reply.
 ///
-///   return_chat_history (bool): (Optional) Whether to return the chat history.
-///   return_prompt (bool): (Optional) Whether to return the prompt.
-///   return_preamble (bool): (Optional) Whether to return the preamble.
+///   returnChatHistory (bool): (Optional) Whether to return the chat history.
+///   returnPrompt (bool): (Optional) Whether to return the prompt.
+///   returnPreamble (bool): (Optional) Whether to return the preamble.
 ///
-///   user_name (String): (Optional) A string to override the username.
+///   userName (String): (Optional) A string to override the username.
 ///
-///   search_queries_only (bool) : (Optional) When true, the response will only contain a list of generated search queries, but no search will take place, and no reply from the model to the user's message will be generated.
+///   searchQueriesOnly (bool) : (Optional) When true, the response will only contain a list of generated search queries, but no search will take place, and no reply from the model to the user's message will be generated.
 ///   documents (List<Map<String, String>>): (Optional) Documents to use to generate grounded response with citations. Example:
 ///   documents=[
 ///     {
@@ -189,8 +199,8 @@ class CohereClient {
 ///     },
 ///   ],
 ///   connectors (List<Map<String, String>>): (Optional) When specified, the model's reply will be enriched with information found by quering each of the connectors (RAG). Example: connectors: [{"id": "web-search"}]
-///   citation_quality (String): (Optional) Dictates the approach taken to generating citations by allowing the user to specify whether they want "accurate" results or "fast" results. Defaults to "accurate".
-///   prompt_truncation (String): (Optional) Dictates how the prompt will be constructed. With `prompt_truncation` set to "AUTO", some elements from `chat_history` and `documents` will be dropped in attempt to construct a prompt that fits within the model's context length limit. With `prompt_truncation` set to "OFF", no elements will be dropped. If the sum of the inputs exceeds the model's context length limit, a `TooManyTokens` error will be returned.
+///   citationQuality (String): (Optional) Dictates the approach taken to generating citations by allowing the user to specify whether they want "accurate" results or "fast" results. Defaults to "accurate".
+///   promptTruncation (String): (Optional) Dictates how the prompt will be constructed. With `prompt_truncation` set to "AUTO", some elements from `chat_history` and `documents` will be dropped in attempt to construct a prompt that fits within the model's context length limit. With `prompt_truncation` set to "OFF", no elements will be dropped. If the sum of the inputs exceeds the model's context length limit, a `TooManyTokens` error will be returned.
 /// Returns:
 ///   a Chat object if stream: False, or a StreamingChat object if stream: True
 ///
